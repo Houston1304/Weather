@@ -73,7 +73,7 @@ function getTemp() {
 
 searchBtn.addEventListener("click", () => {
   event.preventDefault();
-  let curCity = searchBtn.textContent;
+  saveCurrentCity(mainCity.textContent);
   getTemp();
   render();
 });
@@ -102,6 +102,7 @@ function addFavCity(mainCity) {
     let cityName = `${div.firstChild.textContent}`;
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
     let response = fetch(url);
+    saveCurrentCity(cityName);
     response
       .then((response) => response.json())
       .then((response) => {
@@ -142,3 +143,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   render();
 });
+
+function getWeather() {
+  let cityName = getCurrentCity();
+  const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
+  let response = fetch(url);
+  response
+    .then((response) => response.json())
+    .then((response) => {
+      document.getElementById("mainCity").textContent = cityName;
+      document.getElementById("temperature").innerHTML = `${Math.round(
+        Number(response.main.temp) - 273.15
+      )} &#8451;`;
+      weatherImage.src = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
+    })
+    .catch(() => alert("Ошибка"));
+}
+
+getWeather();
