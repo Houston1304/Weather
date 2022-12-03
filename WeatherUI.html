@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="WeatherStyle.css" />
+<head>
+  <title>Погода</title>
+</head>
+<body>
+  <div class="interface">
+    <div class="searchCity">
+      <input id="inpCity" />
+      <input id="searchName" type="image" src="magnifying-glass.png" />
+    </div>
+
+    <div class="select">
+      <div class="listHead">Added locations:</div>
+      <div class="citySelect">
+        <ul class="cityList"></ul>
+      </div>
+    </div>
+
+    <div class="optionSelect">
+      <input type="radio" name="optionBtn" id="nowBtn" value="" checked />
+      <label for="nowBtn">Now</label>
+
+      <input type="radio" name="optionBtn" id="detailsBtn" value="" />
+      <label for="detailsBtn">Details</label>
+
+      <div id="nowContent">
+        <label id="temperature">14&#8451;</label>
+        <img
+          id="weatherImg"
+          src="http://openweathermap.org/img/wn/10d@2x.png"
+        />
+        <label id="mainCity">Moscow</label>
+        <input type="image" id="favoriteBtn" src="favorite.png" />
+      </div>
+      <div id="detContent">
+        <li id="mainCityDet">Moscow</li>
+        <li id="temperature">Temperature: 14&#8451;</li>
+        <li id="feelsTemp">Feels like: 10&#8451;</li>
+        <li id="overcast">Weather: Clouds</li>
+        <li id="sunrise">Sunrise: 03:21</li>
+        <li id="sunset">Sunset: 18:54</li>
+      </div>
+    </div>
+  </div>
+  <script src="WeatherScript.js"></script>
+</body>
