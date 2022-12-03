@@ -8,6 +8,17 @@ let cityList = document.querySelector(".cityList");
 let mainCity = document.getElementById("mainCity");
 let cityText = document.getElementById("mainCity").textContent;
 
+function saveFavoriteCities(array) {
+  const list = JSON.stringify(array);
+  localStorage.setItem("FavoriteCities", list);
+}
+
+function getFavoriteCities() {
+  const savedList = localStorage.getItem("FavoriteCities");
+  const savedArray = JSON.parse(savedList);
+  return savedArray;
+}
+
 let list = [];
 
 let storage = [];
@@ -36,8 +47,7 @@ function deleteTask(name) {
   list.splice(obj, 1);
 }
 
-function getTemp() {
-  event.preventDefault();
+function getTemp(city) {
   let searchCity = `${cityName.value}`;
   const url = `${serverUrl}?q=${searchCity}&appid=${apiKey}`;
   let response = fetch(url);
@@ -54,7 +64,9 @@ function getTemp() {
 }
 
 searchBtn.addEventListener("click", () => {
-  getTemp();
+  event.preventDefault();
+
+  render();
 });
 
 function addFavCity(mainCity) {
@@ -102,6 +114,7 @@ function render() {
   for (let elem of list) {
     addFavCity(elem.name);
   }
+  saveFavoriteCities(list);
 }
 
 favoriteButton.addEventListener("click", () => {
@@ -109,4 +122,14 @@ favoriteButton.addEventListener("click", () => {
   addTask(mainCity.textContent);
   render();
   return;
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  let loadList = getFavoriteCities();
+  if (loadList !== null) {
+    loadList.forEach((element) => {
+      list.push(element);
+    });
+  }
+  render();
 });
