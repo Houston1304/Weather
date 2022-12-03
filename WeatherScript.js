@@ -19,6 +19,14 @@ function getFavoriteCities() {
   return savedArray;
 }
 
+function saveCurrentCity(cityName) {
+  localStorage.setItem("CurrentCity", cityName);
+}
+
+function getCurrentCity() {
+  return localStorage.getItem("CurrentCity");
+}
+
 let list = [];
 
 let storage = [];
@@ -47,7 +55,7 @@ function deleteTask(name) {
   list.splice(obj, 1);
 }
 
-function getTemp(city) {
+function getTemp() {
   let searchCity = `${cityName.value}`;
   const url = `${serverUrl}?q=${searchCity}&appid=${apiKey}`;
   let response = fetch(url);
@@ -65,7 +73,8 @@ function getTemp(city) {
 
 searchBtn.addEventListener("click", () => {
   event.preventDefault();
-
+  let curCity = searchBtn.textContent;
+  getTemp();
   render();
 });
 
