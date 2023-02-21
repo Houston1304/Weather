@@ -171,3 +171,53 @@ li {
 #weatherImg {
   position: absolute;
 }
+
+#temperatureDet {
+  position: relative;
+  left: 90px;
+  bottom: 17px;
+}
+
+#feelsTempTitle {
+  position: relative;
+  bottom: 17px;
+}
+
+#feelsTemp {
+  position: absolute;
+  left: 88px;
+  top: 48px;
+}
+
+#overcastTitle {
+  position: relative;
+  bottom: 15px;
+}
+
+#overcast {
+  position: absolute;
+  top: 67px;
+  left: 80px;
+}
+
+#sunriseTitle {
+  position: absolute;
+  top: 85px;
+}
+
+#sunrise {
+  position: absolute;
+  top: 85px;
+  left: 75px;
+}
+
+#sunsetTitle {
+  position: absolute;
+  top: 102px;
+}
+
+#sunset {
+  position: absolute;
+  left: 70px;
+  top: 102px;
+}

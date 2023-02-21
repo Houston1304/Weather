@@ -6,7 +6,13 @@ let weatherImage = document.getElementById("weatherImg");
 let favoriteButton = document.getElementById("favoriteBtn");
 let cityList = document.querySelector(".cityList");
 let mainCity = document.getElementById("mainCity");
+let mainCityDet = document.getElementById("mainCityDet");
 let cityText = document.getElementById("mainCity").textContent;
+let detTemperature = document.getElementById("temperatureDet");
+let feelsTemp = document.getElementById("feelsTemp");
+let overcast = document.getElementById("overcast");
+let sunrise = document.getElementById("sunrise");
+let sunset = document.getElementById("sunset");
 
 function saveFavoriteCities(array) {
   const list = JSON.stringify(array);
@@ -58,16 +64,32 @@ function deleteTask(name) {
 function getTemp() {
   let searchCity = `${cityName.value}`;
   const url = `${serverUrl}?q=${searchCity}&appid=${apiKey}`;
+
   let response = fetch(url);
   response
     .then((response) => response.json())
     .then((response) => {
       mainCity.textContent = searchCity;
+      mainCityDet.textContent = searchCity;
       document.getElementById("temperature").innerHTML = `${Math.round(
         Number(response.main.temp) - 273.15
       )} &#8451;`;
+      detTemperature.innerHTML = `${Math.round(
+        Number(response.main.temp) - 273.15
+      )} &#8451;`;
       weatherImage.src = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
+      feelsTemp.innerHTML = `${Math.round(
+        Number(response.main.feels_like) - 273.15
+      )} &#8451;`;
+      overcast.innerHTML = response.weather[0].main;
+      sunrise.innerHTML = `${new Date(
+        1000 * response.sys.sunrise
+      ).getHours()}:${new Date(1000 * response.sys.sunrise).getMinutes()}`;
+      sunset.innerHTML = `${new Date(
+        1000 * response.sys.sunset
+      ).getHours()}:${new Date(1000 * response.sys.sunrise).getMinutes()}`;
     })
+
     .catch(() => alert("Ошибка"));
 }
 
@@ -98,21 +120,36 @@ function addFavCity(mainCity) {
     render();
   });
 
-  div.addEventListener("click", () => {
+  div.addEventListener("click", async () => {
     let cityName = `${div.firstChild.textContent}`;
+    mainCityDet.textContent = `${div.firstChild.textContent}`;
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
-    let response = fetch(url);
-    saveCurrentCity(cityName);
-    response
-      .then((response) => response.json())
-      .then((response) => {
-        document.getElementById("mainCity").textContent = cityName;
-        document.getElementById("temperature").innerHTML = `${Math.round(
-          Number(response.main.temp) - 273.15
-        )} &#8451;`;
-        weatherImage.src = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
-      })
-      .catch(() => alert("Ошибка"));
+    try {
+      let response = await fetch(url);
+      saveCurrentCity(cityName);
+      let user = await response.json();
+      document.getElementById("mainCity").textContent = cityName;
+      document.getElementById("temperature").innerHTML = `${Math.round(
+        Number(user.main.temp) - 273.15
+      )} &#8451;`;
+      weatherImage.src = `http://openweathermap.org/img/wn/${user.weather[0].icon}@2x.png`;
+      detTemperature.innerHTML = `${Math.round(
+        Number(user.main.temp) - 273.15
+      )} &#8451;`;
+      weatherImage.src = `http://openweathermap.org/img/wn/${user.weather[0].icon}@2x.png`;
+      feelsTemp.innerHTML = `${Math.round(
+        Number(user.main.feels_like) - 273.15
+      )} &#8451;`;
+      overcast.innerHTML = user.weather[0].main;
+      sunrise.innerHTML = `${new Date(
+        1000 * user.sys.sunrise
+      ).getHours()}:${new Date(1000 * user.sys.sunrise).getMinutes()}`;
+      sunset.innerHTML = `${new Date(
+        1000 * user.sys.sunset
+      ).getHours()}:${new Date(1000 * user.sys.sunrise).getMinutes()}`;
+    } catch (err) {
+      alert("Ошибка");
+    }
   });
 
   event.preventDefault();
@@ -146,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getWeather() {
   let cityName = getCurrentCity();
+  mainCityDet.textContent = cityName;
   const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
   let response = fetch(url);
   response
@@ -156,6 +194,20 @@ function getWeather() {
         Number(response.main.temp) - 273.15
       )} &#8451;`;
       weatherImage.src = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
+      detTemperature.innerHTML = `${Math.round(
+        Number(response.main.temp) - 273.15
+      )} &#8451;`;
+      weatherImage.src = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
+      feelsTemp.innerHTML = `${Math.round(
+        Number(response.main.feels_like) - 273.15
+      )} &#8451;`;
+      overcast.innerHTML = response.weather[0].main;
+      sunrise.innerHTML = `${new Date(
+        1000 * response.sys.sunrise
+      ).getHours()}:${new Date(1000 * response.sys.sunrise).getMinutes()}`;
+      sunset.innerHTML = `${new Date(
+        1000 * response.sys.sunset
+      ).getHours()}:${new Date(1000 * response.sys.sunrise).getMinutes()}`;
     })
     .catch(() => alert("Ошибка"));
 }
